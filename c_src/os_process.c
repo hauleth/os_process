@@ -13,10 +13,8 @@ static ERL_NIF_TERM process_info_nif(ErlNifEnv *env, int argc, const ERL_NIF_TER
   ERL_NIF_TERM map = enif_make_new_map(env);
   size_t size = 0;
 
-  struct Entry *entries = process_info_functions(&size);
-
-  for (size_t i = 0; i < size; ++i) {
-    add(env, &map, entries[i]);
+  for (size_t i = 0; i < process_info_functions_size; ++i) {
+    add(env, &map, process_info_functions[i]);
   }
 
   return map;

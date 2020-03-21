@@ -16,7 +16,7 @@ static ERL_NIF_TERM get_priority_process(ErlNifEnv* env) { return enif_make_int(
 static ERL_NIF_TERM get_priority_pgroup(ErlNifEnv* env) { return enif_make_int(env, getpriority(PRIO_PGRP, 0)); }
 static ERL_NIF_TERM get_priority_user(ErlNifEnv* env) { return enif_make_int(env, getpriority(PRIO_USER, 0)); }
 
-struct Entry functions[] = {
+static struct Entry functions[] = {
   {"pid", get_pid},
   {"pgid", get_pgid},
   {"parent_pid", get_parent_pid},
@@ -29,8 +29,4 @@ struct Entry functions[] = {
   {"priority_user", get_priority_user}
 };
 
-struct Entry* process_info_functions(size_t *size) {
-  *size = sizeof(functions) / sizeof(struct Entry);
-
-  return functions;
-}
+PROCESS_INFO_FUNCTIONS(functions)
