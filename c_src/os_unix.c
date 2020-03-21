@@ -26,7 +26,7 @@ static struct Entry functions[] = {
   {"effective_gid", get_effective_gid},
   {"priority_process", get_priority_process},
   {"priority_pgroup", get_priority_pgroup},
-  {"priority_user", get_priority_user}
+  {"priority_user", get_priority_user},
 };
 
 PROCESS_INFO_FUNCTIONS(functions)
