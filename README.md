@@ -1,9 +1,3 @@
-<!--
-SPDX-FileCopyrightText: 2025 Łukasz Niemier <#@hauleth.dev>
-
-SPDX-License-Identifier: MIT
--->
-
 # `os_process`
 
 Missing piece of system information in OTP.
@@ -21,3 +15,14 @@ This library exposes more info about process:
 
 In addition to that, there is small helper function that also return C type
 sizes.
+
+## License
+
+[MIT](LICENSES/MIT.txt)
+
+<!--
+SPDX-FileCopyrightText: 2025 Łukasz Niemier <#@hauleth.dev>
+
+SPDX-License-Identifier: MIT
+-->
+
