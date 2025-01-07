@@ -1,6 +1,10 @@
+% SPDX-FileCopyrightText: 2025 Łukasz Niemier <#@hauleth.dev>
+%
+% SPDX-License-Identifier: MIT
+
 {application, os_process,
- [{description, "An OTP library"},
-  {vsn, "0.1.0"},
+ [{description, "Get more detailed information about current system process"},
+  {vsn, git},
   {registered, []},
   {applications,
    [kernel,

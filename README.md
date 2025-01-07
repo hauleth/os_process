@@ -1,9 +1,23 @@
-os_process
-=====
+<!--
+SPDX-FileCopyrightText: 2025 Łukasz Niemier <#@hauleth.dev>
 
-An OTP library
+SPDX-License-Identifier: MIT
+-->
 
-Build
------
+# `os_process`
 
-    $ rebar3 compile
+Missing piece of system information in OTP.
+
+This is small library that allows users to fetch more information about the
+current process from the OS. ERTS support only one information - process ID
+(that is strangely returned as a charlist).
+
+This library exposes more info about process:
+
+- process ID (as integer)
+- priority
+- effective/real group/user ID (on Unixes)
+- user name (on Windows)
+
+In addition to that, there is small helper function that also return C type
+sizes.

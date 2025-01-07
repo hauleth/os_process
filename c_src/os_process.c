@@ -1,4 +1,11 @@
+/*
+ * SPDX-FileCopyrightText: 2025 Łukasz Niemier <#@hauleth.dev>
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
 #include <erl_nif.h>
+#include <limits.h>
 
 #define M_ADD(env, map, key, value) enif_make_map_put(env, map, key, value, &map)
 
@@ -11,7 +18,7 @@
   ENTRY(priority) \
   ENTRY(user_name)
 
-#define ATOMS \
+#define PRIORITY \
   ENTRY(class) \
   ENTRY(thread)
 
@@ -32,15 +39,24 @@
   ENTRY(effective_uid) \
   ENTRY(effective_gid)
 
-#define ATOMS \
+#define PRIORITY \
   ENTRY(process) \
   ENTRY(process_group) \
   ENTRY(user)
 
 #endif
 
+#define ATOMS \
+  ENTRY(byte) \
+  ENTRY(short) \
+  ENTRY(int) \
+  ENTRY(long) \
+  ENTRY(long_long) \
+  ENTRY(ptr)
+
 #define ENTRY(X) static ERL_NIF_TERM atom_##X;
 ENTRIES;
+PRIORITY;
 ATOMS;
 #undef ENTRY
 
@@ -109,15 +125,33 @@ static ERL_NIF_TERM process_info_nif(ErlNifEnv *env, int argc, const ERL_NIF_TER
   return map;
 }
 
+ERL_NIF_TERM sizes_map;
+
+static ERL_NIF_TERM sizes_nif(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[]) {
+  return sizes_map;
+}
+
 static ErlNifFunc nif_funcs[] = {
-  {"info", 0, process_info_nif}
+  {"info", 0, process_info_nif},
+  {"sizes", 0, sizes_nif},
 };
 
 static int os_process_init(ErlNifEnv *env, void **priv_data, ERL_NIF_TERM load_info) {
 #define ENTRY(X) atom_##X = enif_make_atom(env, #X);
   ENTRIES;
+  PRIORITY;
   ATOMS;
 #undef ENTRY
+
+  /* Setup sizes map, as these will not change in runtime */
+  sizes_map = enif_make_new_map(env);
+
+  M_ADD(env, sizes_map, atom_byte, enif_make_int(env, CHAR_BIT));
+  M_ADD(env, sizes_map, atom_short, enif_make_int(env, sizeof(short) * CHAR_BIT));
+  M_ADD(env, sizes_map, atom_int, enif_make_int(env, sizeof(int) * CHAR_BIT));
+  M_ADD(env, sizes_map, atom_long, enif_make_int(env, sizeof(long) * CHAR_BIT));
+  M_ADD(env, sizes_map, atom_long_long, enif_make_int(env, sizeof(long long) * CHAR_BIT));
+  M_ADD(env, sizes_map, atom_ptr, enif_make_int(env, sizeof(void*) * CHAR_BIT));
 
   return 0;
 }
